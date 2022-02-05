@@ -1,6 +1,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieTicketsApp.WebApi.Services.Genre.Models;
 using MovieTicketsApp.WebApi.Shared.Database;
 
 namespace MovieTicketsApp.WebApi.Services.Genre;
@@ -16,17 +17,8 @@ public class GenreController : ControllerBase
         _database = databaseContext;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Models.Genre>> Create([FromBody] Models.CreateGenreRequest request)
-    {
-        var genre = request.Adapt<Entities.Genre>();
-        _database.Genres.Add(genre);
-        await _database.SaveChangesAsync();
-        return genre.Adapt<Models.Genre>();
-    }
-
     [HttpGet("{id}")]
-    public async Task<ActionResult<Models.Genre>> GetGenre([FromRoute] Models.GetGenreRequest request)
+    public async Task<ActionResult<GenreResource>> Get([FromRoute] GetGenreRequest request)
     {
         var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == request.Id);
 
@@ -35,21 +27,30 @@ public class GenreController : ControllerBase
             return NotFound();
         }
 
-        return genre.Adapt<Models.Genre>();
+        return genre.Adapt<GenreResource>();
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Models.Genre>>> SearchGenre([FromQuery] Models.SearchGenreRequest request)
+    public async Task<ActionResult<IEnumerable<GenreResource>>> Search([FromQuery] SearchGenreRequest request)
     {
         var genres = await _database.Genres
             .Where(g => string.IsNullOrEmpty(request.Name) || g.Name == request.Name)
             .ToListAsync();
 
-        return genres.Adapt<List<Models.Genre>>();
+        return genres.Adapt<List<GenreResource>>();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<GenreResource>> Create([FromBody] CreateGenreRequest request)
+    {
+        var genre = request.Adapt<Entities.Genre>();
+        _database.Genres.Add(genre);
+        await _database.SaveChangesAsync();
+        return genre.Adapt<GenreResource>();
     }
 
     [HttpPatch("{id}")]
-    public async Task<ActionResult<Models.Genre>> UpdateGenre([FromRoute] long id, [FromBody] Models.UpdateGenreRequest request)
+    public async Task<ActionResult<GenreResource>> Update([FromRoute] long id, [FromBody] UpdateGenreRequest request)
     {
         var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == id);
 
@@ -62,11 +63,11 @@ public class GenreController : ControllerBase
 
         await _database.SaveChangesAsync();
 
-        return genre.Adapt<Models.Genre>();
+        return genre.Adapt<GenreResource>();
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Models.Genre>> DeleteGenre([FromRoute] long id)
+    public async Task<ActionResult<GenreResource>> Delete([FromRoute] long id)
     {
         var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == id);
 
