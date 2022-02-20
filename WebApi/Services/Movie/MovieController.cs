@@ -18,11 +18,11 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<MovieResource>> Get([FromRoute] GetMovieRequest request)
+    public async Task<ActionResult<MovieResource>> Get([FromRoute] long id)
     {
         var movie = await _database.Movies
                                    .Include(movie => movie.Genre)
-                                   .FirstOrDefaultAsync(movie => movie.Id == request.Id);
+                                   .FirstOrDefaultAsync(movie => movie.Id == id);
 
         if (movie == null)
         {

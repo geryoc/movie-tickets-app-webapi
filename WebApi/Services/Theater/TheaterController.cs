@@ -19,9 +19,9 @@ public class TheaterController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TheaterResource>> Get([FromRoute] GetTheaterRequest request)
+    public async Task<ActionResult<TheaterResource>> Get([FromRoute] long id)
     {
-        var theater = await _database.Theaters.FirstOrDefaultAsync(theater => theater.Id == request.Id);
+        var theater = await _database.Theaters.FirstOrDefaultAsync(theater => theater.Id == id);
 
         if (theater == null)
         {
@@ -32,7 +32,7 @@ public class TheaterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TheaterResource>>> Search([FromRoute] SearchTheaterRequest request)
+    public async Task<ActionResult<IEnumerable<TheaterResource>>> Search([FromQuery] SearchTheaterRequest request)
     {
         var theaters = await _database.Theaters
                                       .Where(theater => string.IsNullOrEmpty(request.Name) || theater.Name == request.Name)
@@ -68,9 +68,9 @@ public class TheaterController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete([FromRoute] DeleteTheaterRequest request)
+    public async Task<ActionResult> Delete([FromRoute] long id)
     {
-        var theater = await _database.Theaters.FirstOrDefaultAsync(theater => theater.Id == request.Id);
+        var theater = await _database.Theaters.FirstOrDefaultAsync(theater => theater.Id == id);
 
         if (theater == null)
         {

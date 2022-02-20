@@ -18,9 +18,9 @@ public class GenreController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GenreResource>> Get([FromRoute] GetGenreRequest request)
+    public async Task<ActionResult<GenreResource>> Get([FromRoute] long id)
     {
-        var genre = await _database.Genres.FirstOrDefaultAsync(genre => genre.Id == request.Id);
+        var genre = await _database.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
 
         if (genre == null)
         {
