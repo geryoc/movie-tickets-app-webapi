@@ -20,7 +20,7 @@ public class GenreController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<GenreResource>> Get([FromRoute] GetGenreRequest request)
     {
-        var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == request.Id);
+        var genre = await _database.Genres.FirstOrDefaultAsync(genre => genre.Id == request.Id);
 
         if (genre == null)
         {
@@ -34,7 +34,7 @@ public class GenreController : ControllerBase
     public async Task<ActionResult<IEnumerable<GenreResource>>> Search([FromQuery] SearchGenreRequest request)
     {
         var genres = await _database.Genres
-            .Where(g => string.IsNullOrEmpty(request.Name) || g.Name == request.Name)
+            .Where(genre => string.IsNullOrEmpty(request.Name) || genre.Name == request.Name)
             .ToListAsync();
 
         return genres.Adapt<List<GenreResource>>();
@@ -52,7 +52,7 @@ public class GenreController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<ActionResult<GenreResource>> Update([FromRoute] long id, [FromBody] UpdateGenreRequest request)
     {
-        var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == id);
+        var genre = await _database.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
 
         if (genre == null)
         {
@@ -69,7 +69,7 @@ public class GenreController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<GenreResource>> Delete([FromRoute] long id)
     {
-        var genre = await _database.Genres.FirstOrDefaultAsync(g => g.Id == id);
+        var genre = await _database.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
 
         if (genre == null)
         {
