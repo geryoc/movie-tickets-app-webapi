@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MovieTicketsApp.WebApi.Services.Movie.Models;
+namespace MovieTicketsApp.WebApi.Services.Theater.Models;
 
-public class GetMovieRequest
+public class DeleteTheaterRequest
 {
     [Required]
     public long Id { get; set; }
