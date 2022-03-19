@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieTicketsApp.WebApi.Services.Genre.Entities;
 using MovieTicketsApp.WebApi.Services.Movie.Entities;
-using MovieTicketsApp.WebApi.Services.Theater;
+using MovieTicketsApp.WebApi.Services.Theater.Entities;
 
 namespace MovieTicketsApp.WebApi.Shared.Database;
 
@@ -14,6 +14,7 @@ public class DatabaseContext : DbContext
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Theater> Theaters { get; set; }
+    public DbSet<TheaterRoom> TheaterRooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

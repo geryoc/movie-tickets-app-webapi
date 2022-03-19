@@ -4,12 +4,16 @@ using MovieTicketsApp.WebApi.Shared.Database;
 
 namespace MovieTicketsApp.WebApi.Services.Theater.Entities;
 
-[Table("Theater", Schema = "MovieTicketApp")]
-public class Theater : Entity
+[Table("TheaterRoom", Schema = "MovieTicketApp")]
+public class TheaterRoom : Entity
 {
     [Required]
     [MaxLength(500)]
     public string Name { get; set; }
 
-    public ICollection<TheaterRoom> Rooms { get; set; }
+    [MaxLength(1000)]
+    public string Description { get; set; }
+
+    public long TheaterId { get; set; }
+    public Theater Theater { get; set; }
 }
