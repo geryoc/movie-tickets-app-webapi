@@ -23,8 +23,8 @@ public class SearchShowRequest : PagedRequest
 
 public enum ShowOrderByOption
 {
-    CreatedDate = 0,
-    CreatedDateDescending = 1,
+    Created = 0,
+    CreatedDescending = 1,
     ShowDate = 2,
     ShowDateDescending = 3,
     TicketPrice = 4,

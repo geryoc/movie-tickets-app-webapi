@@ -2,11 +2,11 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieTicketsApp.WebApi.Services.Show.Models;
-using ShowEntities = MovieTicketsApp.WebApi.Services.Show.Entities;
 using MovieTicketsApp.WebApi.Shared.Database;
 using MovieTicketsApp.WebApi.Shared.Web.Models;
 using MovieTicketsApp.WebApi.Services.Show.Helpers;
-using MovieTicketsApp.WebApi.Services.Theater.Models;
+using MovieTicketsApp.WebApi.Shared.Helpers;
+using ShowEntities = MovieTicketsApp.WebApi.Services.Show.Entities;
 
 namespace ShowTicketsApp.WebApi.Services.Show;
 
@@ -31,7 +31,7 @@ public class ShowController : ControllerBase
             return NotFound();
         }
 
-        return show.AdaptShow();
+        return show.AdaptToResource();
     }
 
     [HttpGet]
@@ -49,14 +49,13 @@ public class ShowController : ControllerBase
 
         var showResults = await showsQuery.Skip(request.Skip)
                                           .Take(request.Take)
-                                          .ShowOrderBy(request.OrderBy)
+                                          .OrderBy(request.OrderBy)
+                                          .Select(show => show.AdaptToResource())
                                           .ToListAsync();
-
-        var showResultsResources = showResults.Select(show => show.AdaptShow()).ToList();
 
         var result = new PagedResource<ShowResource>()
         {
-            Results = showResultsResources,
+            Results = showResults,
             TotalItems = showsTotalItems,
             Skip = request.Skip,
             Take = request.Take,
@@ -88,7 +87,7 @@ public class ShowController : ControllerBase
         var show = await _database.Shows.IncludeRelated()
                                         .FirstOrDefaultAsync(show => show.Id == newShow.Id);
 
-        return show.AdaptShow();
+        return show.AdaptToResource();
     }
 
     [HttpPatch("{id}")]
@@ -110,7 +109,7 @@ public class ShowController : ControllerBase
 
         await _database.SaveChangesAsync();
 
-        return show.AdaptShow();
+        return show.AdaptToResource();
     }
 
     [HttpDelete("{id}")]
