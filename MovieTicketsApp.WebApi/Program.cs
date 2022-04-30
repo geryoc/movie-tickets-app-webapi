@@ -1,7 +1,6 @@
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using MovieTicketsApp.WebApi.Shared.Database;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,3 +32,5 @@ app.MapControllers();
 
 // 4. Run
 app.Run();
+
+public partial class Program { } // For Visibility to Integration Tests

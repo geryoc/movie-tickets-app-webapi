@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "movie_tickets_app_webapi": {
+    "MovieTicketsAppWebApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
