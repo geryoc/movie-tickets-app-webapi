@@ -21,6 +21,7 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.AddOnDeleteRestrictConvention();
         builder.AddSoftDeleteQueryFilter();
     }
 

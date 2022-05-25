@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MovieTicketsApp.WebApi.Shared.Database;
 
@@ -33,6 +34,19 @@ public static class DatabaseContextHelper
                     break;
             }
         }
+    }
+
+    public static void AddOnDeleteRestrictConvention(this ModelBuilder builder)
+    {
+        // By convention EF Core sets DeleteBehavior == DeleteBehavior.Cascade for non-nullable FKs
+        // This code sets the convention to DeleteBehavior.Restrict (ON DELETE RESTRICT in SQL)
+        builder.Model.GetEntityTypes().ToList().ForEach(entity =>
+        {
+            entity.GetForeignKeys()
+                  .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade)
+                  .ToList()
+                  .ForEach(fk => fk.DeleteBehavior = DeleteBehavior.Restrict);
+        });
     }
 
     public static void AddSoftDeleteQueryFilter(this ModelBuilder modelBuilder)
